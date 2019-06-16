@@ -47,6 +47,31 @@ app.get("/blogs/new", function(req, res){
     res.render("new");
 });
 
+// CREATE ROUTE
+app.post("/blogs", function(req, res){
+    // Creat blog
+    Blog.create(req.body.blog, function(err, newBlog){
+        if(err){
+            res.render("new");
+        }
+        else{
+            res.redirect("/blogs");
+        }
+    });
+});
+
+// SHOW ROUTE
+app.get("/blogs/:id", function(req,res){
+    Blog.findById(req.params.id, function(err, foundBlog){
+        if(err){
+            res.send(err);
+            // res.redirect("/blogs");
+        }
+        else{
+            res.render("show", {blog: foundBlog});
+        }
+    })
+});
 app.listen(4396, process.env.IP, function(){
     console.log("RUNN");
 });
